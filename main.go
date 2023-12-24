@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"regexp"
 	"strings"
 )
 
@@ -35,19 +34,14 @@ func main() {
 	// create scanner
 	scanner := bufio.NewScanner(file)
 
-	// regex to replace new lines
-	re := regexp.MustCompile(`\r?\n`)
-
 	// read file line by line
 	var lines []string
 	for scanner.Scan() {
-		// remplace regex with \n
-		line := re.ReplaceAllString(scanner.Text(), "\\n")
-		lines = append(lines, line)
+		lines = append(lines, scanner.Text())
 	}
 
 	// write to file with no new lines (condensed "\n")
-	_, err = newFile.WriteString(strings.Join(lines, ""))
+	_, err = newFile.WriteString(strings.Join(lines, "\\n"))
 	if err != nil {
 		panic(err)
 	}
